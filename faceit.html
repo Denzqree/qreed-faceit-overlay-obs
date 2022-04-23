@@ -1,0 +1,122 @@
+<html>
+    <head>
+    </head>
+    <style>
+        body {
+            width: 130px;
+            height: 60px;
+        }
+
+        p {
+            margin: auto;
+        }
+
+        main {
+            border-radius: 5px;
+            animation-duration:60s;
+            animation-name: fadeinout;
+            opacity:0;
+            animation-iteration-count: infinite;
+            background-image: url('background.png');
+            background-size:cover;
+            display:flex;
+            flex-direction:row;
+        }
+
+        @keyframes fadeinout {
+            0% {
+                opacity:0;
+            }
+            25% {
+                opacity:0;
+            }
+            48% {
+                opacity:1;
+            }
+            52% {
+                opacity:1;
+            }
+            75% {
+                opacity:0;
+            }
+            100% {
+                opacity:0;
+            }
+
+        }
+
+        #fi-lvl, #fi-elo {
+            font-family: sans-serif;
+            font-size: 20px;
+        }
+        #fi-lvl-title, #fi-elo-title {
+            font-family: sans-serif;
+            font-size: 14px;
+            color: #ff6809;
+            font-weight: bold;
+        }
+        #lvl {
+            opacity: 0.8;
+            color:white;
+            font-weight: bold;
+        }
+
+        #elo {
+            display:flex;
+            align-items:center;
+            color:black;
+        }
+
+        #fi-lvl {
+            color:#ff6809;
+        }
+
+        section {
+            width:65px;
+            height:60px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            flex-direction:column;
+        }
+    </style>
+
+    <body>
+        <main>
+
+            <section id="elo">
+                <p id="fi-elo-title">ELO</p>
+                <p id="fi-lvl-title">LEVEL</p>
+            </section>
+            <section id="lvl">
+                <p id="fi-elo">X</p>
+                <p id="fi-lvl">X</p>
+            </section>
+        </main>
+        <script>
+            // Url for the request 
+            var url = 'https://open.faceit.com/data/v4/players?nickname=YOURFACEITNICKNAMEHERE';
+            var skill_level;
+            var faceit_elo;
+          
+            // Making our request
+
+            function getStats(url) {
+            fetch(url, { method: 'GET', 
+                       headers: {
+                        'Authorization': 'Bearer YOUR-FACEIT-DEV-CLIENT-TOKEN-HERE'
+                       },})
+              .then(Result => Result.json())
+              .then(string => {
+        
+                  // Printing our response 
+                  document.getElementById("fi-lvl").innerHTML = string.games.csgo.skill_level;
+                  document.getElementById("fi-elo").innerHTML = string.games.csgo.faceit_elo;  
+              })
+              .catch(errorMsg => { console.log(errorMsg); });
+            }
+
+            setInterval(getStats,25000,url);
+        </script>
+    </body>
+</html>
